@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dream11 Predictor - Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    .welcome-section {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      margin: 20px 0;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .predict-container {
+      margin-bottom: 30px;
+    }
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    }
+    .card-img-top {
+      height: 250px;
+      object-fit: cover;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+    .card-body {
+      padding: 2rem;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      border-radius: 25px;
+      padding: 12px 30px;
+      font-weight: 600;
+    }
+    .btn-success {
+      background: linear-gradient(135deg, #42b883, #347474);
+      border: none;
+      border-radius: 25px;
+      padding: 12px 30px;
+      font-weight: 600;
+    }
+    .footer {
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ 'danger' if category == 'error' else 'success' if category == 'success' else 'info' }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{{ url_for('connect') }}">
+          <i class="fas fa-crown me-2"></i>Dream Team Predictor
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <span class="navbar-text text-light me-3">
+                <i class="fas fa-user me-1"></i>Welcome, {{ username }}!
+              </span>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('contact') }}">Contact</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container-fluid mt-4">
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+      <h1 class="display-5 fw-bold text-primary">Welcome to Dream11 Predictor!</h1>
+      <p class="lead">Choose your prediction type and build winning teams with AI-powered insights.</p>
+      <div class="row mt-4">
+        <div class="col-md-8 mx-auto">
+          <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong>Get Started:</strong> Select either score prediction or team prediction to begin your analysis.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prediction Options -->
+    <div class="row g-4">
+      <!-- Predict Score -->
+      <div class="col-md-6 p-4 text-center predict-container">
+        <div class="card h-100">
+          <img src="{{ url_for('static', filename='mi1.jpeg') }}"class="card-img-top" alt="Score Prediction">
+          <div class="card-body d-flex flex-column">
+            <h3 class="card-title text-primary">
+              <i class="fas fa-chart-line me-2"></i>Predict Score
+            </h3>
+            <p class="card-text flex-grow-1">
+              Use our advanced machine learning model to predict the first innings score 
+              based on current match situation, team performance, and historical data.
+            </p>
+            <div class="features mb-3">
+              <span class="badge bg-primary me-1">Live Analysis</span>
+              <span class="badge bg-primary me-1">ML Powered</span>
+              <span class="badge bg-primary">Real-time</span>
+            </div>
+            <a href="{{ url_for('score_predict') }}" class="btn btn-primary btn-lg mt-auto">
+              <i class="fas fa-rocket me-2"></i>Start Score Prediction
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Predict Team -->
+      <div class="col-md-6 p-4 text-center predict-container">
+        <div class="card h-100">
+          <img src="{{ url_for('static', filename='csk1.jpeg') }}" class="card-img-top" alt="Team Prediction">
+          <div class="card-body d-flex flex-column">
+            <h3 class="card-title text-success">
+              <i class="fas fa-users me-2"></i>Predict Team
+            </h3>
+            <p class="card-text flex-grow-1">
+              Build your perfect Dream11 team with AI-powered player selection, 
+              considering form, pitch conditions, and opponent analysis.
+            </p>
+            <div class="features mb-3">
+              <span class="badge bg-success me-1">AI Selection</span>
+              <span class="badge bg-success me-1">Player Stats</span>
+              <span class="badge bg-success">Optimal Team</span>
+            </div>
+            <a href="{{ url_for('team_predict') }}" class="btn btn-success btn-lg mt-auto">
+              <i class="fas fa-magic me-2"></i>Start Team Prediction
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="row mt-5">
+      <div class="col-12">
+        <div class="welcome-section">
+          <h4 class="text-center mb-4">Why Choose Dream11 Predictor?</h4>
+          <div class="row text-center">
+            <div class="col-md-3">
+              <i class="fas fa-brain fa-3x text-primary mb-3"></i>
+              <h5>AI Powered</h5>
+              <p>Advanced machine learning algorithms</p>
+            </div>
+            <div class="col-md-3">
+              <i class="fas fa-bolt fa-3x text-warning mb-3"></i>
+              <h5>Fast Analysis</h5>
+              <p>Real-time predictions and insights</p>
+            </div>
+            <div class="col-md-3">
+              <i class="fas fa-chart-bar fa-3x text-info mb-3"></i>
+              <h5>Data Driven</h5>
+              <p>Based on extensive historical data</p>
+            </div>
+            <div class="col-md-3">
+              <i class="fas fa-trophy fa-3x text-success mb-3"></i>
+              <h5>Proven Results</h5>
+              <p>Trusted by thousands of users</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-dark text-light text-center py-4 mt-5">
+    <div class="container">
+      <p class="mb-0">&copy; 2025 Dream11 Team Predictor | All rights reserved.</p>
+      <p class="mb-0 mt-2">
+        <small>Made with <i class="fas fa-heart text-danger"></i> for cricket enthusiasts</small>
+      </p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
